@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Geri Dönüşüm fabrikası</title>
+	<style>
+		body {
+      margin: 0;
+      font-family: 'Roboto Flex', sans-serif;
+    }
+		canvas { display: block; z-index: -1;  position: fixed; width: 100vh; height: 100vh;}
+    
+    
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400;500;600&display=swap');
+
+
+#my-canvas{
+  position: fixed;
+}
+.cont-1{
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+.cont-2{
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+.cont-3{
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+#loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000000;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      opacity: 1;
+      transition: opacity 0.5s;
+      pointer-events: none;
+
+    }
+
+    #loading-screen.hide {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 2px solid gray;
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+
+    }
+    
+    .yukleme{
+      color: #fff;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    .bilgi-panelleri{
+      display: flex;
+      align-content: flex-start;
+    }
+    .bilgi-paneli {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      right: 10%;
+      width: 33.33%;
+      display: flex;
+      flex-direction: column;
+      height: 0vh;
+      background-color:rgba(21, 21, 21, 0.62);
+      border:1px solid rgba(255, 255, 255, 0.04);
+      z-index: 500;
+      opacity: 0;
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      transition: all 1.2s ease-in-out , right 1.2s cubic-bezier(0.46, 0.03, 0.52, 0.96);
+    }
+    .bilgi-paneli-active{
+      right: 5%;
+      opacity: 1;
+      height: 80vh;
+      pointer-events: auto;
+    }
+    @media (max-width: 1160px) {
+      .bilgi-paneli {
+        
+      min-width: 40%;
+      max-width: 40%;
+      
+
+    }
+    
+        }
+     .bilgi-paneli h5, .bilgi-paneli p{
+      color: white;
+    }
+    .container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    transition: all ease-in-out 0.2s;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: all 1s ease-in-out;
+    pointer-events: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .container-passive{
+      opacity: 0; 
+      pointer-events: none;
+  }
+  
+  .sol-div {
+    width: 30%;
+    
+    
+  }
+  
+  .container2 {
+    position: fixed;
+    top: 70%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 1s ease-in-out;
+    pointer-events: none;
+    opacity: 0;
+    display: flex;
+
+  }
+  .container2-active{
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sol-div2 {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-basla {
+    width: fit-content;
+    height: auto;
+    padding: 8px 32px;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid white;
+    color: white;
+    font-size: 17px;
+    background-color: transparent;
+    transition: all ease-in-out 0.4s;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .btn-basla:hover{
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border:1px solid transparent;
+
+    
+  }
+
+  .btn {
+      width: fit-content;
+      height: auto;
+      padding: 8px 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid white;
+      color: white;
+      font-size: 17px;
+      background-color: transparent;
+      transition: all ease-in-out 0.4s;
+      cursor: pointer;
+      margin-right: 20px;
+    }
+
+  .btn2 {
+      width: fit-content;
+      height: auto;
+      padding: 8px 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid white;
+      color: white;
+      font-size: 17px;
+      background-color: transparent;
+      transition: all ease-in-out 0.4s;
+      cursor: pointer;
+      margin-left: 20px;
+    }
+
+    .btn:hover, .btn2:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+
+    padding: 10px 40px;
+    }
+
+
+    .exit-buton-div{
+      width: 100%;
+      height: 70px;
+      background-color: transparent;
+      z-index: 1000;
+      display: flex;
+      justify-content: end;
+      position: absolute;
+    }
+
+    .exit-img{
+      height: 24px;
+      display: flex;
+      cursor: pointer;
+      /*margin: 32px;*/
+      position: absolute;
+      right: 5%;
+      top: 25%;
+      transition: all cubic-bezier(0.82, -0.25, 0.14, 1.41) 1.5s;
+      
+    }
+    .exit-img:hover {
+  transform: rotate(180deg);
+}
+    #daire {
+      position: absolute;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      border: solid white 1px;
+      background-color: transparent;
+      z-index: 501;
+      pointer-events: none;
+      mix-blend-mode: normal;
+      transition: background-color 0.4s ease-in-out, width 0.4s ease-in-out, height 0.4s ease-in-out;
+    }
+    /*#daire-kucuk {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: solid white 1px;
+      background-color: white;
+      z-index: 2;
+      pointer-events: none;
+    }*/
+
+    .baslik{
+      color: white;
+    }
+
+    .numerik{
+      color: transparent;
+      -webkit-text-stroke: 1px white;
+      width:max-content;
+      transition: all ease-in-out 0.3s;
+    }
+
+    .numerik:hover{
+      color: white;
+      -webkit-text-stroke: initial;
+    }
+    
+    .more-button{
+      width: fit-content;
+      height: auto;
+      padding: 8px 32px 8px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom:  1px  solid white;
+      color: white;
+      font-size: 17px;
+      background-color: transparent;
+      transition: background-color 0.4s ease-in-out, width 0.4s ease-in-out, height 0.4s ease-in-out, padding 0.4s ease-in-out;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .more-button:hover{
+      background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+
+    padding: 8px 40px 8px 8px;
+    }
+    
+        
+    .icerik{
+      display: none;
+      flex-direction: column;
+      padding: 48px;
+      opacity: 0;
+      transition: all ease-in-out 0.7s  ;
+    }
+    .icerik-active{
+      opacity: 1;
+
+    }
+    .more-button2{
+      width: fit-content;
+      height: auto;
+      padding: 8px 32px 8px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom:  1px  solid white;
+      color: white;
+      font-size: 17px;
+      background-color: transparent;
+      transition: background-color 0.4s ease-in-out, width 0.4s ease-in-out, height 0.4s ease-in-out, padding 0.4s ease-in-out;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .more-button2:hover{
+      background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+
+    padding: 8px 40px 8px 8px;
+    }
+    .icerik2{
+      display: none;
+      flex-direction: column;
+      padding: 48px;
+      opacity: 0;
+      transition: all ease-in-out 0.7s  ;
+    }
+    .icerik2-active{
+      opacity: 1;
+
+    }
+    .baslik2{
+      color: white;
+    }
+
+    .numerik2{
+      color: transparent;
+      -webkit-text-stroke: 1px white;
+      width:max-content;
+      transition: all ease-in-out 0.3s;
+    }
+
+    .numerik2:hover{
+      color: white;
+      -webkit-text-stroke: initial;
+    }
+    .more-button3{
+      width: fit-content;
+      height: auto;
+      padding: 8px 32px 8px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom:  1px  solid white;
+      color: white;
+      font-size: 17px;
+      background-color: transparent;
+      transition: background-color 0.4s ease-in-out, width 0.4s ease-in-out, height 0.4s ease-in-out, padding 0.4s ease-in-out;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .more-button3:hover{
+      background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+
+    padding: 8px 40px 8px 8px;
+    }
+    .icerik3{
+      display: none;
+      flex-direction: column;
+      padding: 48px;
+      opacity: 0;
+      transition: all ease-in-out 0.7s  ;
+    }
+    .icerik3-active{
+      opacity: 1;
+
+    }
+    .baslik3{
+      color: white;
+    }
+
+    .numerik3{
+      color: transparent;
+      -webkit-text-stroke: 1px white;
+      width:max-content;
+      transition: all ease-in-out 0.3s;
+    }
+
+    .numerik3:hover{
+      color: white;
+      -webkit-text-stroke: initial;
+    }
+    
+    .more-button4{
+      width: fit-content;
+      height: auto;
+      padding: 8px 32px 8px 0px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom:  1px  solid white;
+      color: white;
+      font-size: 17px;
+      background-color: transparent;
+      transition: background-color 0.4s ease-in-out, width 0.4s ease-in-out, height 0.4s ease-in-out, padding 0.4s ease-in-out;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .more-button4:hover{
+      background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+
+    padding: 8px 40px 8px 8px;
+    }
+    .icerik4{
+      display: none;
+      flex-direction: column;
+      padding: 48px;
+      opacity: 0;
+      transition: all ease-in-out 0.7s  ;
+    }
+    .icerik4-active{
+      opacity: 1;
+
+    }
+    .baslik4{
+      color: white;
+    }
+
+    .numerik4{
+      color: transparent;
+      -webkit-text-stroke: 1px white;
+      width:max-content;
+      transition: all ease-in-out 0.3s;
+    }
+
+    .numerik4:hover{
+      color: white;
+      -webkit-text-stroke: initial;
+    }
+
+    .karton{
+      width: 100px;
+      height: 100px;
+    }
+  
+
+    @keyframes cloudAnimation1 {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(8%);
+}}
+
+@keyframes cloudAnimation2 {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12%);
+  }
+  100% {
+    transform: translatey(0);
+  }
+}
+
+@keyframes cloudAnimation3 {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(20%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes cloudAnimation4 {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-10%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+    .cloud1{
+      width: 800px;
+      height: auto;
+      position: absolute;
+      margin-top:-40%;
+      margin-left: -50%;
+      opacity: 0.7;
+      animation: cloudAnimation1 8s ease-in-out infinite;
+      transition: all 1s linear;
+      animation-direction: alternate-reverse;
+
+    }
+    .cloud1-container{
+      position: absolute;
+      width: 1000px;
+      
+    }
+    .cloud2{
+      width: 900px;
+      height: auto;
+      position: absolute;
+      margin-top:0%;
+      margin-left: 60%;
+      opacity: 0.5;
+      animation: cloudAnimation2 20s ease-in-out infinite;
+      transition: all 1s linear;
+      animation-direction: alternate-reverse;
+
+    }
+    .cloud2-container{
+      width: 1000px;
+      position: absolute;
+
+
+    }
+    .cloud3{
+      width: 500px;
+      height: auto;
+      position: absolute;
+      margin-top:-30%;
+      margin-left: 70%;
+      animation: cloudAnimation3 20s ease-in-out infinite;
+      transition: all 1s linear;
+      animation-direction: alternate-reverse;
+
+    }
+    .cloud3-container{
+      width: 1000px;
+      position: absolute;
+
+    }
+    .cloud4{
+      width: 300px;
+      height: auto;
+      position: absolute;
+      margin-top:5%;
+      margin-left: 10%;
+      animation: cloudAnimation4 10s ease-in-out infinite;
+      transition: all 1s linear;
+      animation-direction: alternate-reverse;
+      opacity: 0.6;
+
+    }
+    .cloud4-container{
+      width: 1000px;
+      position: absolute;
+
+    }
+    
+   
+    
+    .cloud-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    transition: all ease-in-out 0.2s;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: all 1s ease-in-out;
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .cloud-container-passive{
+      opacity: 0; 
+      pointer-events: none;
+  }
+	</style>
+
+</head>
+<body>
+  <div id="daire"></div>
+  <!--<div id="daire-kucuk"></div> -->
+  <div id="loading-screen">
+    <div class="loader"></div>
+    <p class="yukleme">Yükleniyor 0%</p>
+  </div>
+  <div class="bilgi-panelleri">
+    <div class="bilgi-paneli">
+      <div class="exit-buton-div">
+        <img class="exit-img" src="/exit3.png" alt="">
+      </div>
+      <div class="icerik">
+        <div class="numara">
+          <h1 class="numerik">01</h1>
+        </div>
+        <div class="baslik">
+          <h1 class="baslik">Atıkların Girişi</h1>
+        </div>
+        <div class="aciklama">
+          <p>Bir Ambalaj Atıkları Ayrıştırma Tesisi'nde atıklar ilk olarak Ayrıştırma Bandı Konveyörü'ne gelir. Burada atıklar konveyör ile yukarıdaki
+            banda taşınır ve ayrıştırma işlemi başlamış olur.
+          </p>
+        </div>
+        <div class="eylemler">
+          <p class="more-button">Daha Fazla</p>
+        </div>
+        
+    </div>
+    <div class="icerik2">
+      <div class="numara">
+        <h1 class="numerik2">02</h1>
+      </div>
+      <div class="baslik">
+        <h1 class="baslik2">Ayrıştırma Bandı</h1>
+      </div>
+      <div class="aciklama2">
+        <p>Bu alanda ayrıştırma bandına çıkan atıkların her birisi görevli personeller tarafından kendi sınıfında ayrı ayrı seçilir, ayrıştırılır ve kendi sınıfına ait 
+          konteynerlarda biriktirilir. Biriken atıklar daha sonra preslemeye tabi tutulacaktır.
+        </p>
+      </div>
+      <div class="eylemler">
+        <p class="more-button2">Daha Fazla</p>
+      </div>
+  </div>
+  <div class="icerik3">
+      <div class="numara">
+        <h1 class="numerik3">03</h1>
+      </div>
+      <div class="baslik">
+        <h1 class="baslik3">Bant Sonu</h1>
+      </div>
+      <div class="aciklama3">
+        <p>Ayrıştırma bandında seçilip ayrıştırılan atıklardan belirli bir tür atık veya geri dönüştürülemeyen atıklar bandın devamında 
+          bu alana düşer ve buradaki bant sayesinde Press Makinesi'ne aktarılarak paketlenir.
+        </p>
+      </div>
+      <div class="eylemler">
+        <p class="more-button3">Daha Fazla</p>
+      </div>
+  </div>
+  <div class="icerik4">
+    <div class="numara">
+      <h1 class="numerik4">04</h1>
+    </div>
+    <div class="baslik">
+      <h1 class="baslik4">Pressleme</h1>
+    </div>
+    <div class="aciklama4">
+      <p>Pres makinesine tek tür atık gönderilir(örneğin kağıt/karton, pet, plastik...). Bu atıklar makinede onlarca tonluk basınçla 
+        sıkıştırılır ve daha küçük bir alan kaplayacak seviyelere getirilerek paketlendikten sonra geri dönüştürülmek üzere ilgili tesislere gönderilir.
+      </p>
+    </div>
+    <div class="eylemler">
+      <p class="more-button4">Daha Fazla</p>
+    </div>
+</div>
+  </div>
+	<canvas id="myCanvas"></canvas>
+    <div class="cont-1"></div>	
+    <div class="cont-1"></div>	
+    <div class="cont-2"></div>	
+    
+
+    <div class="container">
+      <?xml version="1.0" encoding="UTF-8"?>
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 209.33 155.61" class="karton">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #684621;
+      }
+
+      .cls-2 {
+        fill: #90724c;
+      }
+
+      .cls-3 {
+        fill: #8e7755;
+      }
+
+      .cls-4 {
+        fill: #99805c;
+      }
+
+      .cls-5 {
+        fill: #bca37b;
+      }
+
+      .cls-6 {
+        fill: #c7ae88;
+      }
+
+      .cls-7 {
+        fill: #c8af89;
+      }
+
+      .cls-8 {
+        fill: #9b7954;
+      }
+
+      .cls-9 {
+        fill: url(#Degradado_sin_nombre_17);
+        opacity: .5;
+      }
+
+      .cls-9, .cls-10, .cls-11, .cls-12, .cls-13, .cls-14 {
+        mix-blend-mode: multiply;
+      }
+
+      .cls-10 {
+        fill: url(#Degradado_sin_nombre_18);
+        opacity: .3;
+      }
+
+      .cls-11 {
+        fill: url(#Degradado_sin_nombre_16);
+        opacity: .2;
+      }
+
+      .cls-12 {
+        fill: url(#Degradado_sin_nombre_20);
+      }
+
+      .cls-12, .cls-13, .cls-14 {
+        opacity: .15;
+      }
+
+      .cls-13 {
+        fill: url(#Degradado_sin_nombre_14);
+      }
+
+      .cls-14 {
+        fill: url(#Degradado_sin_nombre_5);
+      }
+
+      .cls-15 {
+        isolation: isolate;
+      }
+    </style>
+    <linearGradient id="Degradado_sin_nombre_20" data-name="Degradado sin nombre 20" x1="138.33" y1="132.68" x2="116.2" y2="71.87" gradientUnits="userSpaceOnUse">
+      <stop offset=".11" stop-color="#432918"/>
+      <stop offset=".21" stop-color="#462d1c"/>
+      <stop offset=".33" stop-color="#51392a"/>
+      <stop offset=".45" stop-color="#644e40"/>
+      <stop offset=".58" stop-color="#7d6b60"/>
+      <stop offset=".71" stop-color="#9e9188"/>
+      <stop offset=".84" stop-color="#c7bfba"/>
+      <stop offset=".98" stop-color="#f5f4f3"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_5" data-name="Degradado sin nombre 5" x1="33.79" y1="132.13" x2="63.7" y2="80.32" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#432918"/>
+      <stop offset=".05" stop-color="#533b2c"/>
+      <stop offset=".19" stop-color="#806e63"/>
+      <stop offset=".33" stop-color="#a79a92"/>
+      <stop offset=".47" stop-color="#c6beb9"/>
+      <stop offset=".61" stop-color="#dfdad8"/>
+      <stop offset=".75" stop-color="#f0eeed"/>
+      <stop offset=".88" stop-color="#fbfafa"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_14" data-name="Degradado sin nombre 14" x1="68.31" y1="56.85" x2="68.31" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#432918"/>
+      <stop offset=".06" stop-color="#563f30"/>
+      <stop offset=".19" stop-color="#827166"/>
+      <stop offset=".33" stop-color="#a89c95"/>
+      <stop offset=".47" stop-color="#c7c0bb"/>
+      <stop offset=".61" stop-color="#dfdbd8"/>
+      <stop offset=".74" stop-color="#f1efee"/>
+      <stop offset=".88" stop-color="#fbfbfa"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_17" data-name="Degradado sin nombre 17" x1="37.22" y1="87.07" x2="37.22" y2="24.66" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#432918"/>
+      <stop offset=".03" stop-color="#584132"/>
+      <stop offset=".08" stop-color="#7b685d"/>
+      <stop offset=".13" stop-color="#9a8c83"/>
+      <stop offset=".19" stop-color="#b6aba5"/>
+      <stop offset=".26" stop-color="#ccc5c1"/>
+      <stop offset=".33" stop-color="#dfdbd8"/>
+      <stop offset=".41" stop-color="#edebe9"/>
+      <stop offset=".52" stop-color="#f7f6f5"/>
+      <stop offset=".66" stop-color="#fdfdfd"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_16" data-name="Degradado sin nombre 16" x1="163.77" y1="57.8" x2="163.77" y2="1.74" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#432918"/>
+      <stop offset=".07" stop-color="#685446"/>
+      <stop offset=".14" stop-color="#8b7b71"/>
+      <stop offset=".23" stop-color="#aa9f97"/>
+      <stop offset=".31" stop-color="#c5bcb7"/>
+      <stop offset=".4" stop-color="#dad5d1"/>
+      <stop offset=".51" stop-color="#eae7e5"/>
+      <stop offset=".62" stop-color="#f6f4f4"/>
+      <stop offset=".76" stop-color="#fcfcfc"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_18" data-name="Degradado sin nombre 18" x1="125.18" y1="105.53" x2="158.59" y2="13.72" gradientUnits="userSpaceOnUse">
+      <stop offset=".17" stop-color="#432918"/>
+      <stop offset=".18" stop-color="#49301f"/>
+      <stop offset=".27" stop-color="#736053"/>
+      <stop offset=".36" stop-color="#988a81"/>
+      <stop offset=".46" stop-color="#b8aea8"/>
+      <stop offset=".55" stop-color="#d1cbc7"/>
+      <stop offset=".65" stop-color="#e5e2e0"/>
+      <stop offset=".75" stop-color="#f3f2f1"/>
+      <stop offset=".87" stop-color="#fcfbfb"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+  </defs>
+  <g class="cls-15">
+    <g id="katman_2" data-name="katman 2">
+      <g id="OBJECTS">
+        <g>
+          <path class="cls-5" d="m74.45,87.07c.23.69,0,68.54,0,68.54l109.06-39.36v-57.89l-109.06,28.71Z"/>
+          <path class="cls-12" d="m74.45,87.07c.23.69,0,68.54,0,68.54l109.06-39.36v-57.89l-109.06,28.71Z"/>
+          <polygon class="cls-4" points="74.45 87.07 74.45 155.61 23.04 115.32 23.04 56.85 74.45 87.07"/>
+          <polygon class="cls-14" points="74.45 87.07 74.45 155.61 23.04 115.32 23.04 56.85 74.45 87.07"/>
+          <polygon class="cls-8" points="23.04 56.85 125.39 35.66 183.51 58.35 74.45 87.07 23.04 56.85"/>
+          <polygon class="cls-6" points="125.39 35.66 110.68 0 11.23 16.21 23.04 56.85 125.39 35.66"/>
+          <polygon class="cls-13" points="125.39 35.66 110.68 0 11.23 16.21 23.04 56.85 125.39 35.66"/>
+          <polygon class="cls-3" points="0 24.66 23.04 56.85 74.45 87.07 47.59 47.47 0 24.66"/>
+          <polygon class="cls-9" points="0 24.66 23.04 56.85 74.45 87.07 47.59 47.47 0 24.66"/>
+          <polygon class="cls-2" points="125.39 35.66 144.84 1.74 202.15 18.06 182.15 57.8 125.39 35.66"/>
+          <polygon class="cls-11" points="125.39 35.66 144.84 1.74 202.15 18.06 182.15 57.8 125.39 35.66"/>
+          <path class="cls-7" d="m74.45,87.07s22.17-29.87,22.69-30.22c.52-.35,112.19-24.66,112.19-24.66l-25.82,26.17-109.06,28.71Z"/>
+          <path class="cls-10" d="m74.45,87.07s22.17-29.87,22.69-30.22c.52-.35,112.19-24.66,112.19-24.66l-25.82,26.17-109.06,28.71Z"/>
+          <polygon class="cls-1" points="125.39 35.66 125.39 50.53 149.8 45.18 125.39 35.66"/>
+        </g>
+      </g>
+    </g>
+  </g>
+      </svg>
+      <div class="baslik">
+        <h1 class="baslik3">Ambalaj Atıklarının Serüvenini Keşfedin</h1>
+      </div>
+        <button class="btn-basla" id="buton1">Başla</button>
+        
+    </div>
+
+    <div class="cloud-container">
+      <div class="cloud1-container">
+        <img class="cloud1" src="/cloud1.png" alt="">
+      </div>
+      <div class="cloud2-container">
+        <img class="cloud2" src="/cloud2.png" alt="">
+      </div>
+      <div class="cloud3-container">
+        <img class="cloud3" src="/cloud3.png" alt="">
+
+      </div>
+      <div class="cloud4-container">
+        <img class="cloud4" src="/cloud4.png" alt="">
+
+      </div>
+      
+    </div>
+
+    <div class="container2">
+      <div class="sol-div2">
+       
+        <button class="btn" id="btn" >Geri</button>
+        <button class="btn2" id="btn2" >İleri</button>
+      </div>
+      
+      <div class="sag-div2">
+        <!-- Sağ div içeriği -->
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.130.1/build/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.8/dat.gui.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.131.2/examples/js/loaders/GLTFLoader.js"></script>
+
+
+<!-- OrbitControls CDN -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.131.2/examples/js/controls/OrbitControls.js"></script>
+
+
+
+	<script>
+
+// btn-basla düğmesine tıklanıldığında
+document.querySelector(".btn-basla").addEventListener("click", function() {
+  // container2'nin görünürlüğünü kapat
+  var container = document.querySelector('.container');
+  container.classList.add('container-passive');
+  var cloud_container = document.querySelector('.cloud-container');
+  cloud_container.classList.add('cloud-container-passive');
+  setTimeout(function() {   
+    var container2 = document.querySelector('.container2');
+  container2.classList.add('container2-active');
+}, 1000);
+  
+  // container'ın görünürlüğünü aç
+  
+
+  document.querySelector(".btn2").dispatchEvent(new Event("click"));
+});
+ 
+var fabrika;
+
+document.addEventListener("DOMContentLoaded", function(event) {
+      var loadingManager = new THREE.LoadingManager();
+      var loader = new THREE.GLTFLoader(loadingManager);
+      var loadingScreen = document.getElementById("loading-screen");
+
+      loadingManager.onStart = function(url, itemsLoaded, itemsTotal) {
+        loadingScreen.classList.remove("hide");
+      };
+
+      loadingManager.onLoad = function() {
+        loadingScreen.classList.add("hide");
+      };
+
+      loadingManager.onProgress = function(url, itemsLoaded, itemsTotal) {
+  var progress = Math.floor((itemsLoaded / itemsTotal) * 1000) / 10; // Calculate progress percentage with 1 decimal place
+
+  var yuklemeText = document.querySelector(".yukleme");
+  yuklemeText.textContent = "Yükleniyor " + progress.toFixed(1) + "%";
+
+    
+
+      };
+
+      loadingManager.onError = function(url) {
+        console.error("Error loading " + url);
+      };
+
+      // Objeleri yükleme işlemini burada gerçekleştirin
+      loader.load('/untitled.gltf', function(gltf) {
+        var object = gltf.scene;
+    object.traverse((node) => {
+      if (!node.isMesh) return;
+      node.material.wireframe = false;
+      node.material.transparent = false;
+      node.material.opacity = 1;
+
+    });
+      scene.add(gltf.scene);
+      gltf.scene.position.set(-2, -0.5, 0);
+      gltf.scene.rotation.set(0,Math.PI/2, 0);
+      gltf.scene.scale.set(0.05, 0.05, 0.05); // modelin boyutunu ölçeklendirin
+
+
+  //const box = new THREE.BoxHelper(gltf.scene);
+  //scene.add(box);
+
+  //console.log(gltf.scene.position); // gltf nesnesinin konumu
+  //console.log(box.position); // kutunun konumu
+});
+    });
+
+
+
+  const canvas = document.getElementById("myCanvas");
+
+  
+
+
+
+
+  /////////////  SAHNE İÇİN GEREKLİ ELEMANLARIN OLUŞTURULMASI
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas: canvas,
+    antialias: true
+  });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.toneMapping = THREE.ReinhardToneMapping;
+renderer.toneMappingExposure = 2;
+
+  // Sahne oluşturma
+  const scene = new THREE.Scene();
+  
+
+
+  var width = window.innerWidth;
+var height = window.innerHeight;
+var camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+scene.add(camera);
+camera.position.set(-2.5,0.2, 3.5);
+
+
+  const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.5 );
+				hemiLight.color.setHSL( 0.6, 1, 0.6 );
+				hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+				hemiLight.position.set( 0, 50, 0 );
+				scene.add( hemiLight );
+
+
+        const dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+				dirLight.color.setHSL( 0.1, 1, 0.95 );
+				dirLight.position.set( 3, 1.75, 1 );
+				dirLight.position.multiplyScalar( 30 );
+        dirLight.target.position.set(-2, 0, 0);
+dirLight.target.updateMatrixWorld();
+dirLight.lookAt(dirLight.target.position);
+				scene.add( dirLight );
+
+        const dirLight2 = new THREE.DirectionalLight( 0xffffff, 1 );
+				dirLight2.color.setHSL( 0.1, 1, 0.95 );
+				dirLight2.position.set( - 3, 1.75, 1 );
+				dirLight2.position.multiplyScalar( 30 );
+        dirLight2.target.position.set(-3, 0, 0);
+dirLight2.target.updateMatrixWorld();
+dirLight2.lookAt(dirLight2.target.position);
+				scene.add( dirLight2 );
+
+				//const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 10 );
+				//scene.add( dirLightHelper );
+
+        //const dirLightHelper2 = new THREE.DirectionalLightHelper( dirLight2, 10 );
+				//scene.add( dirLightHelper2 );
+ /////////// KAMERANIN SCROLL İLE BİRLİKTE HAREKET ETMESİ
+
+
+ var sayac=0;
+ var btn2 = document.querySelector(".btn2");
+
+btn2.addEventListener("click", function() {
+  sayac++;
+  console.log(sayac);
+  switch (sayac) {
+  case 1:
+  var panel = document.querySelector('.bilgi-paneli');
+  move_clouds();
+
+  setTimeout(function() {
+        panel.classList.add('bilgi-paneli-active');
+}, 800);
+      var icerik = document.querySelector('.icerik');
+      var icerik2 = document.querySelector('.icerik2');
+      icerik.style.display='flex';
+      setTimeout(function() {
+        
+        icerik.classList.add('icerik-active');
+}, 1300);
+setTimeout(function() {
+        
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z: 2,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: Math.PI/4,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  onComplete: function() {
+  }
+});}, 0);
+  
+
+      break;
+  case 2:
+  var icerik = document.querySelector('.icerik');
+  var icerik2 = document.querySelector('.icerik2');
+  icerik.classList.remove('icerik-active');
+  setTimeout(function() {
+        icerik.style.display='none';
+}, 1000);
+  setTimeout(function() {
+        icerik2.style.display='flex';
+}, 100);
+setTimeout(function() {   
+        icerik2.classList.add('icerik2-active');
+}, 1000);
+
+
+
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z:0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: Math.PI/2,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+});
+      break;
+  case 3:
+
+  var icerik2 = document.querySelector('.icerik2');
+  var icerik3 = document.querySelector('.icerik3');
+  icerik2.classList.remove('icerik2-active');
+  setTimeout(function() {
+        icerik2.style.display='none';
+}, 1000);
+  setTimeout(function() {
+        icerik3.style.display='flex';
+}, 100);
+setTimeout(function() {   
+        icerik3.classList.add('icerik3-active');
+}, 1000);
+
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z:-1.5,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: Math.PI/2,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+});
+   break;
+  case 4:
+
+  var icerik3 = document.querySelector('.icerik3');
+  var icerik4 = document.querySelector('.icerik4');
+  icerik3.classList.remove('icerik3-active');
+  setTimeout(function() {
+        icerik3.style.display='none';
+}, 1000);
+  setTimeout(function() {
+        icerik4.style.display='flex';
+}, 100);
+setTimeout(function() {   
+        icerik4.classList.add('icerik4-active');
+}, 1000);
+
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z:0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: -Math.PI/3.5,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+});
+   break;
+   
+   
+   
+  default:
+  var container2 = document.querySelector('.container2');
+
+  setTimeout(function() {
+    container2.classList.remove('container2-active');
+
+}, 200);
+  var panel = document.querySelector('.bilgi-paneli');
+      
+      setTimeout(function() {
+        panel.classList.remove('bilgi-paneli-active');
+}, 1000);
+      var icerik4 = document.querySelector('.icerik4');
+      icerik4.classList.remove('icerik4-active');
+  setTimeout(function() {
+        icerik4.style.display='none';
+}, 1000);
+var container = document.querySelector('.container');
+var cloud_container = document.querySelector('.cloud-container');
+  setTimeout(function() {
+    container.classList.remove('container-passive');
+    cloud_container.classList.remove('cloud-container-passive');
+
+
+}, 2000);
+
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.2,
+  z: 3.5,
+  duration: 3, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: 0,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  onComplete: function() {
+    console.log("Rotasyon animasyonu tamamlandı");
+  }
+});
+sayac=0;
+
+
+setTimeout(function() {
+  move_clouds_reverse();
+}, 2200);
+
+
+  // container'ın görünürlüğünü aç
+  
+
+}
+
+ 
+  
+});
+
+
+var btn = document.querySelector(".btn");
+
+btn.addEventListener("click", function() {
+  sayac--;
+  console.log(sayac);
+  switch (sayac) {
+  case 1:
+  var icerik = document.querySelector('.icerik');
+  var icerik2 = document.querySelector('.icerik2');
+  icerik2.classList.remove('icerik2-active');
+  setTimeout(function() {
+        icerik2.style.display='none';
+}, 700);
+  setTimeout(function() {
+        icerik.style.display='flex';
+}, 800);
+setTimeout(function() {   
+        icerik.classList.add('icerik-active');
+}, 900);
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z: 2,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: Math.PI/4,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+
+      break;
+  case 2:
+
+  var icerik2 = document.querySelector('.icerik2');
+  var icerik3 = document.querySelector('.icerik3');
+  icerik3.classList.remove('icerik3-active');
+  setTimeout(function() {
+        icerik3.style.display='none';
+}, 700);
+  setTimeout(function() {
+        icerik2.style.display='flex';
+}, 800);
+setTimeout(function() {   
+        icerik2.classList.add('icerik2-active');
+}, 900);
+
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z:0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: Math.PI/2,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+});
+      break;
+  case 3:
+
+  var icerik3 = document.querySelector('.icerik3');
+  var icerik4 = document.querySelector('.icerik4');
+  icerik4.classList.remove('icerik4-active');
+  setTimeout(function() {
+        icerik4.style.display='none';
+}, 700);
+  setTimeout(function() {
+        icerik3.style.display='flex';
+}, 800);
+setTimeout(function() {   
+        icerik3.classList.add('icerik3-active');
+}, 900);
+
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z:-1.5,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: Math.PI/2,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+});
+   break;
+  case 4:
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.1,
+  z:0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: -Math.PI/3.5,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+});
+   break;
+   
+   
+  default:
+  var container2 = document.querySelector('.container2');
+
+  setTimeout(function() {
+    container2.classList.remove('container2-active');
+
+}, 200);
+  var panel = document.querySelector('.bilgi-paneli');
+  setTimeout(function() {
+        panel.classList.remove('bilgi-paneli-active');
+}, 1000);
+      var icerik = document.querySelector('.icerik');
+      icerik.classList.remove('icerik-active');
+      var container = document.querySelector('.container');
+var cloud_container = document.querySelector('.cloud-container');
+  setTimeout(function() {
+    container.classList.remove('container-passive');
+    cloud_container.classList.remove('cloud-container-passive');
+
+
+}, 2000);
+  gsap.to(camera.position, {
+  x: -2.5,
+  y: 0.2,
+  z: 3.5,
+  duration: 3, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  
+});
+gsap.to(camera.rotation, {
+  x: 0,
+  y: 0,
+  z: 0,
+  duration: 2, // Animasyon süresi (saniye)
+  ease: "power1.inOut", // Animasyon eğrisi
+  onComplete: function() {
+    console.log("Rotasyon animasyonu tamamlandı");
+  }
+});
+sayac=0;
+setTimeout(function() {
+  move_clouds_reverse();
+
+
+}, 2200);
+
+
+
+}
+
+ 
+  
+});
+
+
+
+
+
+
+
+let theta = 0;
+function handleCameraShake() {
+  // Yeni kamera pozisyonunu hesapla
+  const shakeAmplitude = 0.02;
+  const shakeAmplitude2 = 0.0003;
+  const shakeAmplitude3 = 0.001;
+  camera.position.y = shakeAmplitude * Math.sin(theta);
+  camera.position.x += shakeAmplitude2 * Math.sin(theta);
+
+  // Theta değerini artır
+  theta += 0.013;
+}
+
+function move_clouds(){
+  var cloud1 = document.querySelector('.cloud1-container');
+  var cloud2 = document.querySelector('.cloud2-container');
+  var cloud3 = document.querySelector('.cloud3-container');
+  var cloud4 = document.querySelector('.cloud4-container');
+  cloud1.style.animationName = 'none';
+  cloud2.style.animationName = 'none';
+  cloud3.style.animationName = 'none';
+  cloud4.style.animationName = 'none';
+
+  gsap.to(cloud1, { x: -200,scaleX: 2.5,scaleY: 2.5, duration: 1 , ease: "Power1.easeInOut"});
+  gsap.to(cloud2, { x: 250,scaleX: 2.5,scaleY: 2.5, duration: 1 , ease: "Power1.easeInOut"});
+  gsap.to(cloud3, { x: 250,scaleX: 2.5,scaleY: 2.5, duration: 1 , ease: "Power1.easeInOut"});
+  gsap.to(cloud4, { x: -200,scaleX: 2.5,scaleY: 2.5, duration: 1, ease: "Power1.easeInOut" });
+
+}
+
+function move_clouds_reverse(){
+  var cloud1 = document.querySelector('.cloud1-container');
+  var cloud2 = document.querySelector('.cloud2-container');
+  var cloud3 = document.querySelector('.cloud3-container');
+  var cloud4 = document.querySelector('.cloud4-container');
+  cloud1.style.animationName = 'none';
+  cloud2.style.animationName = 'none';
+  cloud3.style.animationName = 'none';
+  cloud4.style.animationName = 'none';
+
+  gsap.to(cloud1, { x: -50, scaleX: 1, scaleY: 1, duration: 1, ease: "Power1.easeInOut" });
+gsap.to(cloud2, { x: 50, scaleX: 1, scaleY: 1, duration: 1, ease: "Power1.easeInOut" });
+gsap.to(cloud3, { x: 50, scaleX: 1, scaleY: 1, duration: 1, ease: "Power1.easeInOut" });
+gsap.to(cloud4, { x: -50, scaleX: 1, scaleY: 1, duration: 1, ease: "Power1.easeInOut" });
+
+  
+
+}
+
+
+var bilgiPaneli = document.querySelector('.bilgi-paneli');
+var daire = document.querySelector('#daire');
+
+bilgiPaneli.addEventListener('mouseover', function() {
+  daire.style.backgroundColor = 'white';
+  daire.style.mixBlendMode = 'difference';
+  daire.style.width = '50px';
+  daire.style.height = '50px';
+});
+
+bilgiPaneli.addEventListener('mouseout', function() {
+  daire.style.backgroundColor = 'transparent';
+  daire.style.mixBlendMode = 'normal';
+  daire.style.width = '35px';
+  daire.style.height = '35px';
+});
+
+var geributon = document.querySelector('.btn');
+geributon.addEventListener('mouseover', function() {
+  daire.style.backgroundColor = 'white';
+  daire.style.mixBlendMode = 'difference';
+  daire.style.width = '10px';
+  daire.style.height = '10px';
+});
+
+geributon.addEventListener('mouseout', function() {
+  daire.style.backgroundColor = 'transparent';
+  daire.style.mixBlendMode = 'normal';
+  daire.style.width = '35px';
+  daire.style.height = '35px';
+});
+
+var ileributon = document.querySelector('.btn2');
+ileributon.addEventListener('mouseover', function() {
+  daire.style.backgroundColor = 'white';
+  daire.style.mixBlendMode = 'difference';
+  daire.style.width = '10px';
+  daire.style.height = '10px';
+});
+
+ileributon.addEventListener('mouseout', function() {
+  daire.style.backgroundColor = 'transparent';
+  daire.style.mixBlendMode = 'normal';
+  daire.style.width = '35px';
+  daire.style.height = '35px';
+});
+
+var baslabuton = document.querySelector('.btn-basla');
+baslabuton.addEventListener('mouseover', function() {
+  daire.style.backgroundColor = 'white';
+  daire.style.mixBlendMode = 'difference';
+  daire.style.width = '10px';
+  daire.style.height = '10px';
+});
+
+baslabuton.addEventListener('mouseout', function() {
+  daire.style.backgroundColor = 'transparent';
+  daire.style.mixBlendMode = 'normal';
+  daire.style.width = '35px';
+  daire.style.height = '35px';
+});
+
+var morebuton = document.querySelector('.more-button');
+morebuton.addEventListener('mouseover', function(event) {
+    daire.style.backgroundColor = 'white';
+    daire.style.mixBlendMode = 'difference';
+    daire.style.width = '10px';
+    daire.style.height = '10px';
+  
+});
+
+morebuton.addEventListener('mouseout', function(event) {
+  
+    daire.style.backgroundColor = 'white';
+    daire.style.mixBlendMode = 'difference';
+    daire.style.width = '50px';
+    daire.style.height = '50px';
+  
+});
+//EKRAN BOYUTU DEĞİŞTİĞİNDE KAMERA BOYUTLARINI GÜNCELLEME
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', onWindowResize);
+
+  
+document.addEventListener("DOMContentLoaded", function(event) {
+  var buyukDaire = document.getElementById("daire");
+  //var kucukDaire = document.getElementById("daire-kucuk");
+  var mouseX = 0;
+  var mouseY = 0;
+  var currentX = 0;
+  var currentY = 0;
+  var easingBuyuk = 0.35; // Büyük dairenin geçiş yumuşaklığı
+  var easingKucuk = 1; // Küçük dairenin geçiş yumuşaklığı
+
+  document.addEventListener("mousemove", function(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+  });
+
+  function animate() {
+    var dxBuyuk = mouseX - currentX;
+    var dyBuyuk = mouseY - currentY;
+    var dxKucuk = mouseX - currentX;
+    var dyKucuk = mouseY - currentY;
+    var vxBuyuk = dxBuyuk * easingBuyuk;
+    var vyBuyuk = dyBuyuk * easingBuyuk;
+    var vxKucuk = dxKucuk * easingKucuk;
+    var vyKucuk = dyKucuk * easingKucuk;
+
+    currentX += vxBuyuk;
+    currentY += vyBuyuk;
+
+    buyukDaire.style.left = (currentX - buyukDaire.offsetWidth / 2) + "px";
+    buyukDaire.style.top = (currentY - buyukDaire.offsetHeight / 2) + "px";
+
+    //kucukDaire.style.left = (currentX - kucukDaire.offsetWidth / 2 + vxKucuk) + "px";
+    //kucukDaire.style.top = (currentY - kucukDaire.offsetHeight / 2 + vyKucuk) + "px";
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    handleCameraShake();
+    requestAnimationFrame(animate);
+    renderer.render(scene, camera);
+  }
+
+  animate();
+});
+
+
+
+    
+</script>
+
+      
+</body>
+</html>
